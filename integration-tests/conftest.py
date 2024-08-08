@@ -1,6 +1,7 @@
 import pytest
 import subprocess
 import logging
+import toml
 
 logger = logging.getLogger(__name__)
 
@@ -39,3 +40,13 @@ def install_katello_rpm(test_config):
         cmd = "rpm -qa 'katello-ca-consumer*' | xargs rpm -e"
         subprocess.check_call(cmd, shell=True)
         logger.info(f"removing the katello rpm")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def update_config_log_level():
+    rhc_config_file = "/etc/rhc/config.toml"
+    package_manager_config = "/etc/rhc/workers/rhc-package-manager.toml"
+    config1 = toml.load(rhc_config_file)
+    config2 = toml.load(package_manager_config)
+    config1["log-level"] = "trace"
+    config2["log-level"] = "trace"

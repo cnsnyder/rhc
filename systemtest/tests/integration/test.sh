@@ -10,7 +10,7 @@ cd ../../../
 [ -z "${ghprbPullId+x}" ] || ./systemtest/copr-setup.sh
 
 dnf --setopt install_weak_deps=False install -y \
-  podman git-core python3-pip python3-pytest logrotate rhc
+  podman git-core python3-pip python3-pytest logrotate rhc insights-client
 
 python3 -m venv venv
 # shellcheck disable=SC1091

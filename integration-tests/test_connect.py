@@ -109,7 +109,7 @@ def test_connect_wrong_parameters(
 
 @pytest.mark.parametrize("auth", ["basic", "activation-key"])
 def test_rhc_worker_playbook_install_after_rhc_connect(
-    external_candlepin, rhc, test_config, auth
+    external_candlepin, rhc, test_config, auth, update_config_log_level
 ):
     """
     Test that rhc-worker-playbook is installed after rhc-connect,
@@ -144,6 +144,7 @@ def test_rhc_worker_playbook_install_after_rhc_connect(
         )
         if installed_status:
             break
+        time.sleep(60)
     assert (
         installed_status
     ), "rhc connect is expected to install rhc_worker_playbook package"

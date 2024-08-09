@@ -66,7 +66,9 @@ def test_rhcd_service_restart(external_candlepin, rhc, test_config):
 
     # 'rhc disconnect' to ensure system is already disconnected
     rhc.run("disconnect", check=False)
+    util.logged_run(f"systemctl status {pytest.service_name} --no-pager".split())
     try:
+
         util.logged_run("systemctl restart rhcd".split())
         assert not service_is_active()
     except AssertionError as exc:

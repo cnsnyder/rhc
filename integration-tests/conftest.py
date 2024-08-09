@@ -42,7 +42,7 @@ def install_katello_rpm(test_config):
         logger.info(f"removing the katello rpm")
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def update_config_log_level():
     rhc_config_file = "/etc/rhc/config.toml"
     package_manager_config = "/etc/rhc/workers/rhc-package-manager.toml"
@@ -50,3 +50,11 @@ def update_config_log_level():
     config2 = toml.load(package_manager_config)
     config1["log-level"] = "trace"
     config2["log-level"] = "trace"
+
+    with open(rhc_config_file, 'w') as conf_file1:
+        toml.dump(config1, conf_file1)
+    with open(package_manager_config, 'w') as conf_file2:
+        toml.dump(config2, conf_file2)
+
+    subprocess.run(["systemctl", "daemon-reload"])
+

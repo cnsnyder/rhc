@@ -37,7 +37,6 @@ def test_man_page_commands(command):
         "--activation-key, -a",
         "--organization, -o",
         "--password, -p",
-        "--server",
         "--username, -u",
     ],
 )

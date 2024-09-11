@@ -5,6 +5,7 @@ More information about this module could be found: https://github.com/ptoscano/p
 
 import pytest
 from pytest_client_tools import util
+from time import sleep
 from utils import yggdrasil_service_is_active
 
 
@@ -80,6 +81,7 @@ def test_rhcd_service_restart(external_candlepin, rhc, test_config):
     try:
 
         util.logged_run("systemctl restart rhcd".split())
+        sleep(5) # systemd is taking time to reflect 'is-active'
         assert not yggdrasil_service_is_active()
     except AssertionError as exc:
         # for debugging lets check current state of rhcd service

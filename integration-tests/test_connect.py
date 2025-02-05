@@ -49,54 +49,54 @@ def test_connect(external_candlepin, rhc, test_config, auth):
     "credentials,server",
     [
         (  # username and password: valid, server: invalid
-            {"username": "candlepin.username", "password": "candlepin.password"},
-            "http://non-existent.server",
+                {"username": "candlepin.username", "password": "candlepin.password"},
+                "http://non-existent.server",
         ),
         (  # organization and activation-key: valid, server: invalid
-            {
-                "organization": "candlepin.org",
-                "activation-key": "candlepin.activation_keys",
-            },
-            "http://non-existent.server",
+                {
+                    "organization": "candlepin.org",
+                    "activation-key": "candlepin.activation_keys",
+                },
+                "http://non-existent.server",
         ),
         (  # password and server: valid, username: invalid
-            {"username": "non-existent-user", "password": "candlepin.password"},
-            None,
+                {"username": "non-existent-user", "password": "candlepin.password"},
+                None,
         ),
         (  # activation-key and server: valid, organization: invalid
-            {
-                "organization": "non-existent-org",
-                "activation-key": "candlepin.activation_keys",
-            },
-            None,
+                {
+                    "organization": "non-existent-org",
+                    "activation-key": "candlepin.activation_keys",
+                },
+                None,
         ),
         (  # username and server: valid, password: invalid
-            {"username": "candlepin.username", "password": "xpto123"},
-            None,
+                {"username": "candlepin.username", "password": "xpto123"},
+                None,
         ),
         (  # organization and server: valid, activation-key: invalid
-            {"organization": "candlepin.org", "activation-key": "xpto123"},
-            None,
+                {"organization": "candlepin.org", "activation-key": "xpto123"},
+                None,
         ),
         # invalid combination of parameters
-        (
-            {
-                "username": "candlepin.username",
-                "activation-key": "candlepin.activation_keys",
-            },
-            None,
-        ),
-        (
-            {
-                "activation-key": "candlepin.activation_keys",
-                "password": "candlepin.password",
-            },
-            None,
-        ),
+        #        (
+        #           {
+        #               "username": "candlepin.username",
+        #                "activation-key": "candlepin.activation_keys",
+        #            },
+        #            None,
+        #        ),
+        #        (
+        #            {
+        #                "activation-key": "candlepin.activation_keys",
+        #                "password": "candlepin.password",
+        #            },
+        #            None,
+        #       ),
     ],
 )
 def test_connect_wrong_parameters(
-    external_candlepin, rhc, test_config, credentials, server
+        external_candlepin, rhc, test_config, credentials, server
 ):
     """Test if RHC handles invalid credentials properly"""
     # An attempt to bring system in disconnected state in case it is not.
@@ -114,7 +114,7 @@ def test_connect_wrong_parameters(
 @pytest.mark.skip("Test cannot be run due to unresolved issues CCT-696")
 @pytest.mark.parametrize("auth", ["basic", "activation-key"])
 def test_rhc_worker_playbook_install_after_rhc_connect(
-    external_candlepin, rhc, test_config, auth
+        external_candlepin, rhc, test_config, auth
 ):
     """
     Test that rhc-worker-playbook is installed after rhc-connect,

@@ -2,6 +2,7 @@
 This Python module contains integration tests for rhc. It uses pytest-client-tools Python module.
 More information about this module could be found: https://github.com/ptoscano/pytest-client-tools/
 """
+import time
 
 import pytest
 import json
@@ -80,11 +81,11 @@ def test_status_disconnected(rhc):
     # 'rhc disconnect' to ensure system is already disconnected
     rhc.run("disconnect", check=False)
     status_result = rhc.run("status", check=False)
-    assert status_result.returncode != 0
+    assert status_result.returncode == 0
     assert "Not connected to Red Hat Subscription Management" in status_result.stdout
     assert "Not connected to Red Hat Insights" in status_result.stdout
     if pytest.service_name == "rhcd":
-        assert "The Remote Host Configuration daemon is active" in status_result.stdout
+        assert "The Remote Host Configuration daemon is inactive" in status_result.stdout
     else:
         assert "The yggdrasil service is inactive" in status_result.stdout
 
@@ -125,6 +126,7 @@ def test_rhcd_service_restart(external_candlepin, rhc, test_config):
     assert rhc.is_registered
     try:
         util.logged_run("systemctl restart rhcd".split())
+        time.sleep(10)
         assert yggdrasil_service_is_active()
     except AssertionError as exc:
         util.logged_run("systemctl status rhcd --no-pager".split())
